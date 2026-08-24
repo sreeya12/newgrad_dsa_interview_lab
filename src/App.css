@@ -1,0 +1,14 @@
+/* App shell. The Vite starter styles are gone — every page now paints its
+   own surface on top of the shared grid background from index.css. */
+
+.app-main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+@media print {
+  .app-main {
+    display: block;
+  }
+}

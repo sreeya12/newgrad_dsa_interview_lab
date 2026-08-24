@@ -1,0 +1,99 @@
+/* ==================================================================
+   Shared design system.
+   One paper-and-ink palette for every page; each page sets --accent.
+   Deliberately light-only: the whole thing is a printed-log metaphor.
+   ================================================================== */
+
+:root {
+  --paper: #edf0f3;
+  --grid: #dce3ea;
+  --ink: #16233a;
+  --ink2: #4a5a72;
+  --line: #c6d1dc;
+  --hair: #e2e8ee;
+  --white: #fbfcfd;
+
+  --teal: #127b63;
+  --blue: #1d5fa8;
+  --rust: #b8433a;
+  --amber: #b07a18;
+
+  /* Per-page accent. Pages override this on their root class. */
+  --accent: var(--ink);
+
+  --nav-h: 46px;
+
+  --sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+  --disp: 'Space Grotesk', 'IBM Plex Sans', ui-sans-serif, sans-serif;
+
+  color-scheme: light;
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 26px 26px;
+  background-attachment: fixed;
+}
+
+#root {
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* --- shared type helpers, used by every page --- */
+
+.mono {
+  font-family: var(--mono);
+}
+
+.disp {
+  font-family: var(--disp);
+  letter-spacing: -0.02em;
+}
+
+.wrap {
+  max-width: 940px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,588 @@
+/* ==================================================================
+   Shared stylesheet for the two 45-day logs (/leetcode-45, /system-design)
+   and reused by the pattern cards. One file, two accents: each page sets
+   --accent on .log.
+   ================================================================== */
+
+.log {
+  flex-grow: 1;
+  padding: 0 0 80px;
+}
+
+/* --- sticky page header, docked under the app nav --- */
+
+.log .top {
+  border-bottom: 1px solid var(--line);
+  background: rgba(251, 252, 253, 0.93);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 20;
+}
+
+.log .brandrow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 0 12px;
+  flex-wrap: wrap;
+}
+
+.log h1 {
+  font-family: var(--disp);
+  font-size: 30px;
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.log .eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  margin: 0 0 6px;
+}
+
+/* --- SDE / MLE toggle --- */
+
+.log .toggle {
+  display: flex;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.log .toggle button {
+  font-family: var(--mono);
+  background: transparent;
+  border: 0;
+  padding: 8px 14px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.log .toggle button.on {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.log .toggle button:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: -2px;
+}
+
+/* --- meters --- */
+
+.log .meters {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  padding: 0 0 12px;
+  flex-wrap: wrap;
+}
+
+.log .meter {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.log .meter .n {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.log .meter .l {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink2);
+}
+
+.log .bar {
+  flex: 1;
+  min-width: 150px;
+  height: 6px;
+  background: var(--grid);
+  border: 1px solid var(--line);
+  position: relative;
+}
+
+.log .bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--accent);
+  transition: width 0.4s ease;
+}
+
+/* --- tabs --- */
+
+.log nav.tabs {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+}
+
+.log nav.tabs button {
+  font-family: inherit;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 9px 2px;
+  margin-right: 22px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--ink2);
+  white-space: nowrap;
+}
+
+.log nav.tabs button.on {
+  color: var(--ink);
+  border-bottom-color: var(--rust);
+  font-weight: 600;
+}
+
+/* --- phase heading --- */
+
+.log .phase {
+  margin: 38px 0 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.log .phase h2 {
+  font-family: var(--disp);
+  font-size: 19px;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.log .phase .rng {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rust);
+}
+
+.log .phase p {
+  flex-basis: 100%;
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--ink2);
+  max-width: 640px;
+}
+
+/* --- the spine: fills with accent as days close --- */
+
+.log .days {
+  position: relative;
+  padding-left: 34px;
+}
+
+.log .days::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+
+.log .day {
+  position: relative;
+  margin: 0 0 8px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+
+.log .day::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 17px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--line);
+  z-index: 2;
+}
+
+.log .day.some::before {
+  border-color: var(--accent);
+}
+
+.log .day.full::before {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.log .dayhead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  cursor: pointer;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+}
+
+.log .dayhead:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: -2px;
+}
+
+.log .dnum {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink2);
+  border: 1px solid var(--line);
+  padding: 3px 6px;
+  flex-shrink: 0;
+}
+
+.log .dtopic {
+  font-family: var(--disp);
+  font-size: 15px;
+  font-weight: 600;
+  flex: 1;
+  letter-spacing: -0.01em;
+}
+
+.log .dcount {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink2);
+  letter-spacing: 0.06em;
+}
+
+.log .chev {
+  font-family: var(--mono);
+  color: var(--ink2);
+  font-size: 11px;
+  transition: transform 0.2s;
+}
+
+.log .day.open .chev {
+  transform: rotate(90deg);
+}
+
+.log .body {
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--grid);
+}
+
+.log .focus {
+  font-size: 13px;
+  color: var(--ink2);
+  margin: 12px 0 12px;
+  line-height: 1.6;
+  max-width: 660px;
+}
+
+/* --- checkable rows --- */
+
+.log .trow {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 6px 0;
+  border-bottom: 1px dotted var(--grid);
+}
+
+.log .trow:last-child {
+  border-bottom: 0;
+}
+
+.log .box {
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid var(--ink2);
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 1;
+  color: var(--white);
+  padding: 0;
+  margin-top: 1px;
+  border-radius: 1px;
+}
+
+.log .box.done {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.log .box.flag {
+  background: var(--rust);
+  border-color: var(--rust);
+}
+
+.log .box.ml.done {
+  background: var(--amber);
+  border-color: var(--amber);
+}
+
+.log .box:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+}
+
+.log .tlabel {
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.log .trow.done .tlabel {
+  color: var(--ink2);
+}
+
+.log .pid {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink2);
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.log a.pt {
+  font-size: 13.5px;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  flex: 1;
+}
+
+.log a.pt:hover {
+  border-bottom-color: var(--ink);
+}
+
+.log .trow.done a.pt {
+  color: var(--ink2);
+}
+
+.log .diff {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 2px 5px;
+  border: 1px solid currentColor;
+  flex-shrink: 0;
+}
+
+.log .diff.E {
+  color: var(--teal);
+}
+.log .diff.M {
+  color: var(--amber);
+}
+.log .diff.H {
+  color: var(--rust);
+}
+
+.log .prem {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--ink2);
+  border: 1px dashed var(--line);
+  padding: 2px 4px;
+  flex-shrink: 0;
+}
+
+.log .qmeta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink2);
+  letter-spacing: 0.06em;
+}
+
+/* --- the MLE add-on block --- */
+
+.log .mlblock {
+  margin-top: 14px;
+  border-left: 3px solid var(--amber);
+  background: #f7f4ec;
+  padding: 11px 14px;
+}
+
+.log .mlblock .k {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.log .mlblock p {
+  margin: 0 0 8px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.log .mlblock p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- prose cards & tables --- */
+
+.log .card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 18px 20px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+}
+
+.log .card h3 {
+  font-family: var(--disp);
+  margin: 0 0 7px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.log .card p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.68;
+  color: var(--ink2);
+}
+
+.log .tablewrap {
+  overflow-x: auto;
+}
+
+.log table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border: 1px solid var(--line);
+}
+
+.log th {
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  font-weight: 600;
+}
+
+.log td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--grid);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink2);
+  vertical-align: top;
+}
+
+.log td:first-child {
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+  width: 150px;
+}
+
+.log .caveat {
+  font-size: 12px;
+  color: var(--ink2);
+  margin: 12px 0 0;
+  line-height: 1.6;
+  border-left: 2px solid var(--rust);
+  padding-left: 10px;
+}
+
+.log .empty {
+  padding: 44px 20px;
+  text-align: center;
+  border: 1px dashed var(--line);
+  background: var(--white);
+}
+
+.log .empty p {
+  font-size: 14px;
+  color: var(--ink2);
+  margin: 0;
+  max-width: 46ch;
+  margin-inline: auto;
+  line-height: 1.6;
+}
+
+.log .flagrow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 620px) {
+  .log h1 {
+    font-size: 23px;
+  }
+  .log .days {
+    padding-left: 26px;
+  }
+  .log .days::before {
+    left: 7px;
+  }
+  .log .day::before {
+    left: -24px;
+  }
+  .log .pid {
+    display: none;
+  }
+  .log td:first-child {
+    width: auto;
+    white-space: normal;
+  }
+  .log table,
+  .log tbody,
+  .log tr,
+  .log td,
+  .log th {
+    display: block;
+  }
+  .log th {
+    display: none;
+  }
+  .log tr {
+    border-bottom: 1px solid var(--line);
+  }
+  .log td {
+    border: 0;
+    padding: 6px 12px;
+  }
+}

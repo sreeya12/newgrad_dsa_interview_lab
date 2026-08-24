@@ -1,0 +1,285 @@
+/* Styling for the plain-text reference page (/dsa-reference).
+   Uses the shared tokens from index.css so it matches the rest of the log. */
+
+.page {
+  --accent: var(--teal);
+  text-align: left;
+  padding: 28px 20px 72px;
+  flex-grow: 1;
+  max-width: 940px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.page-header {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 18px;
+  margin-bottom: 28px;
+}
+
+.page-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  margin: 0 0 6px;
+}
+
+.page-header h1 {
+  font-family: var(--disp);
+  font-size: 30px;
+  margin: 0 0 8px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.page-lede {
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 0;
+}
+
+.page-section {
+  margin-bottom: 32px;
+}
+
+.page .section-note {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.6;
+  margin: 0 0 14px;
+  max-width: 660px;
+}
+
+.page h2 {
+  font-family: var(--disp);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+
+.page h3 {
+  font-family: var(--disp);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+/* --- toolbar --- */
+
+.page .toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.page .seg {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.page .seg button {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 11px;
+  border: 0;
+  background: transparent;
+  color: var(--ink2);
+  cursor: pointer;
+}
+
+.page .seg button.is-on {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.page .btn {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 7px 11px;
+  border-radius: 2px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink2);
+  cursor: pointer;
+}
+
+.page .btn:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.page .spacer {
+  flex: 1 1 auto;
+}
+
+/* --- topic accordion --- */
+
+.page .day {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  margin-bottom: 8px;
+}
+
+.page .day-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 13px 16px;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.page .day-title {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: 15px;
+  flex: 1 1 auto;
+}
+
+.page .day-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink2);
+}
+
+.page .day-body {
+  padding: 4px 16px 18px;
+  border-top: 1px solid var(--grid);
+}
+
+.page .day-focus {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.6;
+  margin: 12px 0 14px;
+  padding-left: 11px;
+  border-left: 3px solid var(--amber);
+}
+
+.page .subhead {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  margin: 16px 0 6px;
+}
+
+.page .bullets {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.6;
+}
+
+.page .bullets li {
+  margin-bottom: 4px;
+}
+
+/* --- tables & code --- */
+
+.page .table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+
+.page table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12.5px;
+}
+
+.page th,
+.page td {
+  text-align: left;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--grid);
+  vertical-align: top;
+  color: var(--ink2);
+}
+
+.page th {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  font-weight: 600;
+  border-bottom: 1px solid var(--line);
+}
+
+.page tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.page code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--grid);
+  padding: 1px 5px;
+  border-radius: 2px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.page pre {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  background: #1b2536;
+  color: #e5ebf2;
+  border-radius: 2px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 10px 0 0;
+}
+
+.page pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  white-space: pre;
+  display: block;
+}
+
+.page .card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+}
+
+.page .card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 16px 18px;
+  text-decoration: none;
+  color: inherit;
+}
+
+@media print {
+  .page .toolbar,
+  .page .no-print {
+    display: none !important;
+  }
+}

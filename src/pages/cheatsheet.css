@@ -1,0 +1,340 @@
+/* Four printable sheets. Screen shows them as pages on a desk; print sends
+   one sheet per physical page. */
+
+.cs {
+  flex-grow: 1;
+  background: #dfe4e9;
+  font-family: 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--ink);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  padding-bottom: 24px;
+}
+
+.cs code,
+.cs pre,
+.cs .m {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+/* --- toolbar --- */
+
+.cs .bar {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 9;
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.cs .bar b {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.cs .bar span {
+  font-size: 11px;
+  color: #a9b7c8;
+}
+
+.cs .bar button {
+  background: #fff;
+  color: var(--ink);
+  border: 0;
+  padding: 7px 15px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.cs .bar button:hover {
+  background: #dce5ef;
+}
+
+/* --- the sheet --- */
+
+.cs .sheet {
+  width: 216mm;
+  max-width: 100%;
+  min-height: 279mm;
+  background: #fff;
+  margin: 16px auto;
+  padding: 11mm 11mm 9mm;
+  box-shadow: 0 2px 10px rgba(20, 32, 47, 0.18);
+  position: relative;
+}
+
+.cs .sheethead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 5px;
+  margin-bottom: 9px;
+  gap: 12px;
+}
+
+.cs .sheethead h1 {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.cs .sheethead .pg {
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  white-space: nowrap;
+}
+
+.cs h2 {
+  font-size: 11px;
+  margin: 11px 0 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.cs h2 em {
+  font-style: normal;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--ink2);
+  font-weight: 400;
+}
+
+.cs .cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cs table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.6px;
+}
+
+.cs th {
+  text-align: left;
+  font-size: 8.6px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  border-bottom: 1px solid var(--line);
+  padding: 3px 5px 3px 0;
+  font-weight: 600;
+}
+
+.cs td {
+  padding: 3px 5px 3px 0;
+  border-bottom: 1px solid var(--hair);
+  vertical-align: top;
+}
+
+.cs td.c {
+  white-space: nowrap;
+}
+
+.cs table code {
+  font-size: 9.4px;
+}
+
+.cs .chip {
+  display: inline-block;
+  padding: 0 4px;
+  border-radius: 2px;
+  font-size: 8.8px;
+  font-weight: 600;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+
+.cs .k1 {
+  color: #0e7357;
+}
+.cs .klog {
+  color: var(--blue);
+}
+.cs .kn {
+  color: #9a6b10;
+}
+.cs .kbad {
+  color: #b03a31;
+}
+
+.cs pre {
+  background: #f4f7fa;
+  border-left: 2px solid var(--ink);
+  margin: 5px 0;
+  padding: 6px 8px;
+  font-size: 9.5px;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.cs pre .cm {
+  color: var(--ink2);
+}
+
+.cs .note {
+  border: 1px solid var(--line);
+  border-left: 3px solid #9a6b10;
+  padding: 6px 8px;
+  margin: 6px 0;
+  font-size: 9.6px;
+}
+
+.cs .note b {
+  color: #9a6b10;
+}
+
+.cs .fig {
+  border: 1px solid var(--line);
+  padding: 7px 8px 4px;
+  margin: 6px 0;
+  background: var(--white);
+}
+
+.cs .fig figcaption {
+  font-size: 8.8px;
+  color: var(--ink2);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0 0 5px;
+}
+
+.cs svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cs .sv-l {
+  stroke: var(--ink);
+  stroke-width: 1;
+  fill: none;
+}
+.cs .sv-lr {
+  stroke: var(--line);
+  stroke-width: 1;
+  fill: none;
+}
+.cs .sv-t {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 8.5px;
+  fill: var(--ink);
+}
+.cs .sv-tl {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 8px;
+  fill: var(--ink2);
+}
+
+.cs ul {
+  margin: 4px 0 6px;
+  padding-left: 14px;
+}
+
+.cs li {
+  margin-bottom: 2.5px;
+  font-size: 9.8px;
+}
+
+.cs .lede {
+  font-size: 9.8px;
+  color: var(--ink2);
+  margin: 0 0 8px;
+}
+
+.cs .foot {
+  position: absolute;
+  bottom: 5mm;
+  left: 11mm;
+  right: 11mm;
+  border-top: 1px solid var(--hair);
+  padding-top: 4px;
+  font-size: 8.4px;
+  color: var(--ink2);
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 700px) {
+  .cs .sheet {
+    width: auto;
+    min-height: 0;
+    padding: 16px 14px 40px;
+    margin: 12px 10px;
+  }
+  .cs .cols {
+    grid-template-columns: 1fr;
+  }
+  .cs .foot {
+    position: static;
+    margin-top: 14px;
+  }
+}
+
+@media print {
+  .cs {
+    background: #fff;
+    font-size: 10.4px;
+    padding: 0;
+  }
+  .cs .bar {
+    display: none;
+  }
+  .cs .sheet {
+    margin: 0;
+    box-shadow: none;
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    page-break-after: always;
+    break-after: page;
+  }
+  .cs .sheet:last-of-type {
+    page-break-after: auto;
+    break-after: auto;
+  }
+  .cs pre,
+  .cs table,
+  .cs .fig,
+  .cs .note {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .cs h2 {
+    page-break-after: avoid;
+  }
+  .cs .foot {
+    position: static;
+    margin-top: 10px;
+  }
+  @page {
+    size: letter portrait;
+    margin: 11mm;
+  }
+}
