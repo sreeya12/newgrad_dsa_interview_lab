@@ -1,5 +1,6 @@
 import { useId, useRef, useEffect, useMemo } from 'react'
 import { C, STATE_FILL, mono, sans } from './tokens.js'
+import { useLang, pick } from '../../prefs.js'
 
 /* ---------------- transport ---------------- */
 
@@ -200,8 +201,10 @@ export function TraceCode({ code, active }) {
 /* ---------------- lab frame wrapper ---------------- */
 
 export function Lab({ tape, controls, children, vars, trace }) {
+  const lang = useLang()
   const f = tape.frame || {}
   const v = vars ? vars(f) : f.vars
+  const tr = pick(trace, lang)
 
   return (
     <div
@@ -257,7 +260,7 @@ export function Lab({ tape, controls, children, vars, trace }) {
         )}
       </div>
 
-      {trace && <TraceCode code={trace.code} active={trace.line(f)} />}
+      {tr && <TraceCode code={tr.code} active={tr.line(f)} />}
 
       <Tape tape={tape} />
     </div>

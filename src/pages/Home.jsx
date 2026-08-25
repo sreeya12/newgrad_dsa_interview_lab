@@ -1,8 +1,11 @@
 import { useState, useMemo } from 'react'
 import { CARDS } from '../data/patterns.js'
+import { CARD_CODE_PY } from '../data/patternsPy.js'
+import { useLang } from '../prefs.js'
 import './patterns.css'
 
 export default function Home() {
+  const lang = useLang()
   const [q, setQ] = useState('')
   const [open, setOpen] = useState(null)
   const [copied, setCopied] = useState(null)
@@ -19,9 +22,11 @@ export default function Home() {
     return hitGroup && t.includes(q.toLowerCase())
   })
 
+  const codeOf = (c) => (lang === 'py' && CARD_CODE_PY[c.name]) || c.code
+
   const copy = async (c) => {
     try {
-      await navigator.clipboard.writeText(c.code)
+      await navigator.clipboard.writeText(codeOf(c))
       setCopied(c.name)
       setTimeout(() => setCopied(null), 1400)
     } catch {
@@ -36,7 +41,9 @@ export default function Home() {
     <div className="pat">
       <header className="top">
         <div className="wrap">
-          <p className="eyebrow">Companion reference · C++</p>
+          <p className="eyebrow">
+            Companion reference · {lang === 'py' ? 'Python' : 'C++'}
+          </p>
           <h1>What to reach for, and why</h1>
           <p className="sub">
             Twenty-one patterns keyed to the phrase that gives them away. Read the trigger,
@@ -98,7 +105,9 @@ export default function Home() {
                     </span>
                   </div>
                   <div className="coderow">
-                    <span className="lbl">Template</span>
+                    <span className="lbl">
+                      Template · {lang === 'py' ? 'Python' : 'C++'}
+                    </span>
                     <button type="button" className="cp" onClick={() => copy(c)}>
                       {copied === c.name
                         ? 'Copied'
@@ -107,7 +116,7 @@ export default function Home() {
                           : 'Copy'}
                     </button>
                   </div>
-                  <pre>{c.code}</pre>
+                  <pre>{codeOf(c)}</pre>
                 </div>
               )}
             </article>

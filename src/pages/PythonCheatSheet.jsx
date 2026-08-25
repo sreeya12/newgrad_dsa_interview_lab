@@ -1,19 +1,22 @@
 import {
-  CONTAINERS,
-  ALGOS,
+  STRUCTURES,
+  STDLIB,
   GOTCHAS,
   SNIPPETS,
   PERF,
-  ORDERED_VS_UNORDERED,
-} from '../data/cppCheatSheet.js'
+  DICT_VS_SET,
+} from '../data/pyCheatSheet.js'
 import { Rich, Cell, Code, Sheet } from './sheetui.jsx'
 import './cheatsheet.css'
 
-export default function CppCheatSheet() {
+/* Python comments start with #, so the Code helper needs telling. */
+const Py = ({ children }) => <Code comment="#">{children}</Code>
+
+export default function PythonCheatSheet() {
   return (
     <div className="cs">
       <div className="bar">
-        <b>C++ for LeetCode</b>
+        <b>Python for LeetCode</b>
         <span>Four sheets. Prints to Letter or A4 — figures and colour chips included.</span>
         <button type="button" onClick={() => window.print()}>
           Print
@@ -21,14 +24,14 @@ export default function CppCheatSheet() {
       </div>
 
       {/* ============================ SHEET 1 ============================ */}
-      <Sheet title="Containers & what they cost" n={1} foot="C++ for LeetCode">
+      <Sheet title="Structures & what they cost" n={1} foot="Python for LeetCode">
         <p className="lede">
-          Pick the container out loud before you write the loop. Naming the cost is half the
-          interview.
+          Python gives you fewer containers than C++ and better defaults. The whole game is
+          knowing which builtin already does your loop.
         </p>
 
         <figure className="fig">
-          <figcaption>Fig. 1 — choosing a container under interview pressure</figcaption>
+          <figcaption>Fig. 1 — choosing a structure under interview pressure</figcaption>
           <svg viewBox="0 0 700 168" xmlns="http://www.w3.org/2000/svg">
             <rect x="4" y="66" width="112" height="30" className="sv-l" />
             <text x="60" y="79" className="sv-tl" textAnchor="middle">What do you need</text>
@@ -38,24 +41,24 @@ export default function CppCheatSheet() {
 
             <path d="M150 20 H182" className="sv-l" />
             <rect x="182" y="8" width="146" height="24" className="sv-l" />
-            <text x="188" y="24" className="sv-tl">key → value, fast lookup</text>
+            <text x="188" y="24" className="sv-tl">key → value, or seen-before</text>
             <path d="M328 20 H360" className="sv-l" />
             <rect x="360" y="6" width="146" height="28" className="sv-l" />
-            <text x="366" y="18" className="sv-t">unordered_map</text>
-            <text x="366" y="29" className="sv-tl">O(1) avg · no order</text>
+            <text x="366" y="18" className="sv-t">dict / set</text>
+            <text x="366" y="29" className="sv-tl">O(1) avg · insertion-ordered</text>
             <path d="M506 20 H538" className="sv-lr" />
-            <text x="542" y="17" className="sv-tl">need sorted keys,</text>
-            <text x="542" y="27" className="sv-tl">ranges? → map</text>
+            <text x="542" y="17" className="sv-tl">just counting?</text>
+            <text x="542" y="27" className="sv-tl">→ Counter</text>
 
             <path d="M150 55 H182" className="sv-l" />
             <rect x="182" y="43" width="146" height="24" className="sv-l" />
             <text x="188" y="59" className="sv-tl">index access, growth at end</text>
             <path d="M328 55 H360" className="sv-l" />
             <rect x="360" y="41" width="146" height="28" className="sv-l" />
-            <text x="366" y="53" className="sv-t">vector</text>
-            <text x="366" y="64" className="sv-tl">default choice · contiguous</text>
+            <text x="366" y="53" className="sv-t">list</text>
+            <text x="366" y="64" className="sv-tl">default choice · pop(0) is O(n)</text>
             <path d="M506 55 H538" className="sv-lr" />
-            <text x="542" y="52" className="sv-tl">both ends?</text>
+            <text x="542" y="52" className="sv-tl">popping the front?</text>
             <text x="542" y="62" className="sv-tl">→ deque</text>
 
             <path d="M150 90 H182" className="sv-l" />
@@ -63,22 +66,22 @@ export default function CppCheatSheet() {
             <text x="188" y="94" className="sv-tl">only the best element</text>
             <path d="M328 90 H360" className="sv-l" />
             <rect x="360" y="76" width="146" height="28" className="sv-l" />
-            <text x="366" y="88" className="sv-t">priority_queue</text>
-            <text x="366" y="99" className="sv-tl">top-k · scheduling · Dijkstra</text>
+            <text x="366" y="88" className="sv-t">heapq</text>
+            <text x="366" y="99" className="sv-tl">min-heap only · negate for max</text>
             <path d="M506 90 H538" className="sv-lr" />
-            <text x="542" y="87" className="sv-tl">need to erase</text>
-            <text x="542" y="97" className="sv-tl">arbitrary? → multiset</text>
+            <text x="542" y="87" className="sv-tl">k is small and fixed?</text>
+            <text x="542" y="97" className="sv-tl">→ nlargest</text>
 
             <path d="M150 125 H182" className="sv-l" />
             <rect x="182" y="113" width="146" height="24" className="sv-l" />
-            <text x="188" y="129" className="sv-tl">order of arrival matters</text>
+            <text x="188" y="129" className="sv-tl">sorted, with inserts</text>
             <path d="M328 125 H360" className="sv-l" />
             <rect x="360" y="111" width="146" height="28" className="sv-l" />
-            <text x="366" y="123" className="sv-t">stack / queue</text>
-            <text x="366" y="134" className="sv-tl">DFS · BFS · monotonic</text>
+            <text x="366" y="123" className="sv-t">bisect on a list</text>
+            <text x="366" y="134" className="sv-tl">O(log n) find · O(n) insert</text>
             <path d="M506 125 H538" className="sv-lr" />
-            <text x="542" y="122" className="sv-tl">sliding window max?</text>
-            <text x="542" y="132" className="sv-tl">→ deque</text>
+            <text x="542" y="122" className="sv-tl">need O(log n) inserts?</text>
+            <text x="542" y="132" className="sv-tl">→ SortedList (3rd party)</text>
 
             <text x="4" y="160" className="sv-tl">
               Solid arrow = the common answer. Hairline = the follow-up the interviewer asks next.
@@ -87,19 +90,19 @@ export default function CppCheatSheet() {
         </figure>
 
         <h2>
-          <span>Container reference</span>
+          <span>Structure reference</span>
           <em>avg case unless noted</em>
         </h2>
         <table>
           <tbody>
             <tr>
-              <th style={{ width: '19%' }}>Container</th>
-              <th style={{ width: '11%' }}>Access</th>
-              <th style={{ width: '13%' }}>Insert</th>
-              <th style={{ width: '13%' }}>Find / erase</th>
+              <th style={{ width: '19%' }}>Structure</th>
+              <th style={{ width: '12%' }}>Access</th>
+              <th style={{ width: '14%' }}>Insert</th>
+              <th style={{ width: '11%' }}>Find</th>
               <th>Reach for it when</th>
             </tr>
-            {CONTAINERS.map((c) => (
+            {STRUCTURES.map((c) => (
               <tr key={c.name}>
                 <td>
                   <code>{c.name}</code>
@@ -124,50 +127,50 @@ export default function CppCheatSheet() {
         <div className="cols">
           <div>
             <h2>
-              <span>Ordered vs unordered</span>
+              <span>dict and set, specifically</span>
             </h2>
             <ul>
-              {ORDERED_VS_UNORDERED.map((l) => (
+              {DICT_VS_SET.map((l) => (
                 <li key={l}>
                   <Rich text={l} />
                 </li>
               ))}
             </ul>
-            <Code>{SNIPPETS.pairKeys}</Code>
+            <Py>{SNIPPETS.io}</Py>
           </div>
           <div>
             <h2>
-              <span>Declaring things fast</span>
+              <span>Building things correctly</span>
             </h2>
-            <Code>{SNIPPETS.declaring}</Code>
+            <Py>{SNIPPETS.building}</Py>
             <div className="note">
-              <b>vector&lt;bool&gt; is not a vector.</b> It packs bits, so{' '}
-              <code>auto&amp; b = v[i]</code> does not give you a real reference. For a visited
-              grid it is fine; if you need references, use <code>vector&lt;char&gt;</code>.
+              <b>[[0] * m] * n is the bug you will write once.</b> The outer{' '}
+              <code>*&nbsp;n</code> copies the <em>reference</em>, so all n rows are one list and{' '}
+              <code>g[1][2] = 5</code> sets column 2 in every row. Always use the comprehension.
             </div>
           </div>
         </div>
       </Sheet>
 
       {/* ============================ SHEET 2 ============================ */}
-      <Sheet title="Algorithms & comparators" n={2} foot="C++ for LeetCode">
+      <Sheet title="The standard library" n={2} foot="Python for LeetCode">
         <p className="lede">
-          Everything here is one <code>#include &lt;algorithm&gt;</code> away. Knowing four of
-          these saves you fifteen lines under pressure.
+          Most Python interview answers are shorter because a builtin already did the loop.
+          Knowing six of these is worth more than any syntax trick.
         </p>
 
         <h2>
-          <span>&lt;algorithm&gt; and &lt;numeric&gt;</span>
+          <span>What to import</span>
           <em>the ones that actually come up</em>
         </h2>
         <table>
           <tbody>
             <tr>
-              <th style={{ width: '29%' }}>Call</th>
+              <th style={{ width: '30%' }}>Call</th>
               <th style={{ width: '12%' }}>Cost</th>
               <th>What it does / when</th>
             </tr>
-            {ALGOS.map(([call, cost, note]) => (
+            {STDLIB.map(([call, cost, note]) => (
               <tr key={call}>
                 <td>
                   <code>{call}</code>
@@ -186,7 +189,7 @@ export default function CppCheatSheet() {
         <div className="cols">
           <div>
             <figure className="fig">
-              <figcaption>Fig. 2 — lower_bound vs upper_bound with duplicates</figcaption>
+              <figcaption>Fig. 2 — bisect_left vs bisect_right with duplicates</figcaption>
               <svg viewBox="0 0 340 108" xmlns="http://www.w3.org/2000/svg">
                 {[1, 2, 2, 2, 5, 7].map((v, i) => (
                   <g key={i}>
@@ -201,117 +204,113 @@ export default function CppCheatSheet() {
                 ))}
                 <text x="10" y="18" className="sv-tl">index</text>
                 <path d="M46 74 V62" className="sv-l" />
-                <text x="46" y="86" className="sv-t" textAnchor="middle">lower_bound(2) = 1</text>
+                <text x="46" y="86" className="sv-t" textAnchor="middle">bisect_left(2) = 1</text>
                 <path d="M154 74 V62" className="sv-l" />
                 <path d="M154 92 V78" className="sv-lr" />
-                <text x="200" y="100" className="sv-t" textAnchor="middle">upper_bound(2) = 4</text>
+                <text x="200" y="100" className="sv-t" textAnchor="middle">bisect_right(2) = 4</text>
                 <text x="250" y="45" className="sv-tl">count of 2s =</text>
-                <text x="250" y="56" className="sv-tl">upper − lower = 3</text>
+                <text x="250" y="56" className="sv-tl">right − left = 3</text>
               </svg>
             </figure>
             <div className="note">
-              <b>On a set or map, use the member.</b> <code>s.lower_bound(x)</code> is O(log n);{' '}
-              <code>std::lower_bound(s.begin(),…)</code> degrades to O(n) because the iterators
-              are not random access.
+              <b>bisect takes a key since 3.10.</b> Before that you had to build a parallel list
+              of keys, which is why so much old code decorates and undecorates. Say which version
+              you are assuming.
             </div>
-            <Code>{SNIPPETS.boundIdx}</Code>
+            <Py>{SNIPPETS.memo}</Py>
           </div>
 
           <div>
             <figure className="fig">
-              <figcaption>Fig. 3 — priority_queue comparator orientation</figcaption>
+              <figcaption>Fig. 3 — heapq is a min-heap, always</figcaption>
               <svg viewBox="0 0 340 104" xmlns="http://www.w3.org/2000/svg">
-                <text x="6" y="12" className="sv-t">priority_queue&lt;int&gt;</text>
-                <text x="6" y="23" className="sv-tl">default less&lt;&gt; → MAX at top</text>
+                <text x="6" y="12" className="sv-t">heappush(h, x)</text>
+                <text x="6" y="23" className="sv-tl">smallest is always h[0]</text>
                 <rect x="18" y="30" width="30" height="18" className="sv-l" />
-                <text x="33" y="43" className="sv-t" textAnchor="middle">9</text>
+                <text x="33" y="43" className="sv-t" textAnchor="middle">4</text>
                 <path d="M33 48 L14 62 M33 48 L52 62" className="sv-l" />
                 <rect x="0" y="62" width="28" height="18" className="sv-l" />
                 <text x="14" y="75" className="sv-t" textAnchor="middle">6</text>
                 <rect x="38" y="62" width="28" height="18" className="sv-l" />
-                <text x="52" y="75" className="sv-t" textAnchor="middle">4</text>
-                <text x="6" y="95" className="sv-tl">top() = 9</text>
+                <text x="52" y="75" className="sv-t" textAnchor="middle">9</text>
+                <text x="6" y="95" className="sv-tl">h[0] = 4</text>
 
                 <path d="M110 8 V98" className="sv-lr" />
-                <text x="128" y="12" className="sv-t">…, greater&lt;int&gt;&gt;</text>
-                <text x="128" y="23" className="sv-tl">→ MIN at top (top-k, Dijkstra)</text>
+                <text x="128" y="12" className="sv-t">heappush(h, -x)</text>
+                <text x="128" y="23" className="sv-tl">negate for a max-heap</text>
                 <rect x="140" y="30" width="30" height="18" className="sv-l" />
-                <text x="155" y="43" className="sv-t" textAnchor="middle">4</text>
+                <text x="155" y="43" className="sv-t" textAnchor="middle">-9</text>
                 <path d="M155 48 L136 62 M155 48 L174 62" className="sv-l" />
                 <rect x="122" y="62" width="28" height="18" className="sv-l" />
-                <text x="136" y="75" className="sv-t" textAnchor="middle">6</text>
+                <text x="136" y="75" className="sv-t" textAnchor="middle">-6</text>
                 <rect x="160" y="62" width="28" height="18" className="sv-l" />
-                <text x="174" y="75" className="sv-t" textAnchor="middle">9</text>
-                <text x="128" y="95" className="sv-tl">top() = 4</text>
+                <text x="174" y="75" className="sv-t" textAnchor="middle">-4</text>
+                <text x="128" y="95" className="sv-tl">-h[0] = 9</text>
 
                 <path d="M210 8 V98" className="sv-lr" />
-                <text x="224" y="20" className="sv-tl">The rule that trips people:</text>
-                <text x="224" y="34" className="sv-tl">cmp(a,b) == true means</text>
-                <text x="224" y="46" className="sv-tl">a has LOWER priority than b,</text>
-                <text x="224" y="58" className="sv-tl">so it comes out LATER.</text>
-                <text x="224" y="76" className="sv-tl">It reads backwards from sort().</text>
+                <text x="224" y="20" className="sv-tl">There is no comparator.</text>
+                <text x="224" y="34" className="sv-tl">Push a tuple whose natural</text>
+                <text x="224" y="46" className="sv-tl">order is the order you want,</text>
+                <text x="224" y="58" className="sv-tl">with a tiebreaker before any</text>
+                <text x="224" y="70" className="sv-tl">object that cannot compare.</text>
               </svg>
             </figure>
-            <Code>{SNIPPETS.comparators}</Code>
+            <Py>{SNIPPETS.heap}</Py>
           </div>
         </div>
 
         <h2>
-          <span>Lambdas &amp; recursion inside a method</span>
+          <span>Comprehensions &amp; unpacking</span>
         </h2>
         <div className="cols">
           <div>
-            <Code>{SNIPPETS.recursiveLambda}</Code>
+            <Py>{SNIPPETS.comprehensions}</Py>
           </div>
           <div>
-            <Code>{SNIPPETS.captures}</Code>
+            <Py>{SNIPPETS.unpacking}</Py>
           </div>
         </div>
       </Sheet>
 
       {/* ============================ SHEET 3 ============================ */}
-      <Sheet title="Idioms you'll type every day" n={3} foot="C++ for LeetCode">
+      <Sheet title="Idioms you'll type every day" n={3} foot="Python for LeetCode">
         <div className="cols">
           <div>
             <h2>
               <span>Strings</span>
             </h2>
-            <Code>{SNIPPETS.strings}</Code>
+            <Py>{SNIPPETS.strings}</Py>
             <h2>
-              <span>Hash maps</span>
+              <span>Sorting</span>
             </h2>
-            <Code>{SNIPPETS.hashmaps}</Code>
+            <Py>{SNIPPETS.sorting}</Py>
             <h2>
               <span>Grids</span>
             </h2>
-            <Code>{SNIPPETS.grids}</Code>
+            <Py>{SNIPPETS.grids}</Py>
           </div>
           <div>
             <h2>
-              <span>Numbers &amp; limits</span>
+              <span>Numbers &amp; division</span>
             </h2>
-            <Code>{SNIPPETS.numbers}</Code>
+            <Py>{SNIPPETS.numbers}</Py>
             <h2>
-              <span>Bit tricks</span>
+              <span>BFS, the shape you reuse</span>
             </h2>
-            <Code>{SNIPPETS.bits}</Code>
+            <Py>{SNIPPETS.bfs}</Py>
             <h2>
-              <span>Sorting recipes</span>
+              <span>Union find</span>
             </h2>
-            <Code>{SNIPPETS.sorting}</Code>
-            <h2>
-              <span>Reading input structures</span>
-            </h2>
-            <Code>{SNIPPETS.loops}</Code>
+            <Py>{SNIPPETS.dsu}</Py>
           </div>
         </div>
       </Sheet>
 
       {/* ============================ SHEET 4 ============================ */}
-      <Sheet title="Gotchas & boilerplate" n={4} foot="C++ for LeetCode">
+      <Sheet title="Gotchas & boilerplate" n={4} foot="Python for LeetCode">
         <p className="lede">
-          Nine of the ten wrong answers you will submit are on this first list. Read it after a
-          failed test case before you re-read your logic.
+          Python has fewer ways to crash than C++ and more ways to be quietly wrong. These are
+          the quiet ones.
         </p>
 
         <h2>
@@ -320,8 +319,8 @@ export default function CppCheatSheet() {
         <table>
           <tbody>
             <tr>
-              <th style={{ width: '33%' }}>The mistake</th>
-              <th style={{ width: '30%' }}>What happens</th>
+              <th style={{ width: '30%' }}>The mistake</th>
+              <th style={{ width: '33%' }}>What happens</th>
               <th>The fix</th>
             </tr>
             {GOTCHAS.map(([mistake, what, fix]) => (
@@ -343,25 +342,17 @@ export default function CppCheatSheet() {
         <div className="cols">
           <div>
             <h2>
-              <span>Given structures — memorize these</span>
+              <span>Classes you will be handed</span>
             </h2>
-            <Code>{SNIPPETS.structs}</Code>
+            <Py>{SNIPPETS.classes}</Py>
             <h2>
-              <span>Union find</span>
+              <span>What Python actually costs</span>
             </h2>
-            <Code>{SNIPPETS.dsu}</Code>
+            <Py>{SNIPPETS.timing}</Py>
           </div>
           <div>
             <h2>
-              <span>Trie node</span>
-            </h2>
-            <Code>{SNIPPETS.trie}</Code>
-            <h2>
-              <span>Custom hash for pair</span>
-            </h2>
-            <Code>{SNIPPETS.pairHash}</Code>
-            <h2>
-              <span>Performance, if TLE hits</span>
+              <span>If TLE hits</span>
             </h2>
             <ul>
               {PERF.map((l) => (
@@ -371,8 +362,14 @@ export default function CppCheatSheet() {
               ))}
             </ul>
             <div className="note">
-              <b>Say the complexity before you are asked.</b> Finish every problem with one
-              sentence: time, space, and what dominates. It costs five seconds and it is scored.
+              <b>Say the complexity before you are asked.</b> Then, in Python, say the constant
+              too: &ldquo;this is O(n log n), and the sort is in C so it will be fast; the O(n)
+              loop above it is the part I would rewrite if we needed more.&rdquo;
+            </div>
+            <div className="note">
+              <b>Ask before importing anything exotic.</b> `collections`, `heapq`, `bisect`,
+              `itertools`, `functools` and `math` are always fine. `sortedcontainers` and `numpy`
+              are not in the stdlib — name them, then ask.
             </div>
           </div>
         </div>

@@ -1,0 +1,183 @@
+/* ==================================================================
+   /ml-track. Rides on log.css: the header, tabs, spine and accordions
+   are all shared. This file only adds the three things the ML track
+   needs that the 45-day logs do not — an answer block, a case block,
+   and the numbered script steps. Everything is scoped under .mlt so it
+   cannot leak into the logs.
+   ================================================================== */
+
+.log .mlt .ans {
+  font-size: 13.6px;
+  line-height: 1.62;
+  margin: 12px 0 0;
+  max-width: 68ch;
+  border-left: 2px solid var(--accent);
+  padding-left: 12px;
+  color: var(--ink);
+}
+
+.log .mlt .qrow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+}
+
+.log .mlt .qtext {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  flex: 1;
+}
+
+/* --- scale numbers on a case --- */
+
+.log .mlt .scale {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 14px 0 4px;
+}
+
+.log .mlt .scale span {
+  font-family: var(--mono);
+  font-size: 11px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+
+.log .mlt .scale span b {
+  color: var(--ink2);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 9.5px;
+  margin-right: 6px;
+}
+
+/* --- one labelled block inside a case --- */
+
+.log .mlt .cb {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--grid);
+}
+
+.log .mlt .cb:first-of-type {
+  border-top: 0;
+}
+
+.log .mlt .cb .k {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.log .mlt .cb p {
+  margin: 0;
+  font-size: 13.6px;
+  line-height: 1.62;
+  max-width: 70ch;
+}
+
+.log .mlt .prompt {
+  font-size: 13.5px;
+  font-style: italic;
+  color: var(--ink2);
+  margin: 12px 0 0;
+}
+
+/* --- the nine-step script --- */
+
+.log .mlt .step {
+  display: flex;
+  gap: 16px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 15px 18px;
+  margin-bottom: 8px;
+}
+
+.log .mlt .step .sn {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+  width: 30px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.log .mlt .step .sbody {
+  flex: 1;
+  min-width: 0;
+}
+
+.log .mlt .step h3 {
+  font-family: var(--disp);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.log .mlt .step h3 em {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink2);
+  font-weight: 400;
+}
+
+.log .mlt .step p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  max-width: 72ch;
+}
+
+.log .mlt .step .watch {
+  margin-top: 8px;
+  border-left: 3px solid var(--amber);
+  background: #f7f4ec;
+  padding: 8px 12px;
+  font-size: 12.8px;
+  line-height: 1.55;
+}
+
+.log .mlt .step .watch b {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 400;
+}
+
+@media (max-width: 620px) {
+  .log .mlt .step {
+    gap: 10px;
+    padding: 13px 14px;
+  }
+  .log .mlt .step .sn {
+    font-size: 16px;
+    width: 22px;
+  }
+}

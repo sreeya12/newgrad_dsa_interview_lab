@@ -113,3 +113,50 @@
     display: none;
   }
 }
+
+/* --- language switch, sits at the end of the nav --- */
+
+.lang-toggle {
+  display: flex;
+  margin-left: 10px;
+  border: 1px solid #43536b;
+  border-radius: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.lang-toggle button {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 5px 9px;
+  border: 0;
+  background: transparent;
+  color: #a9b7c8;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.lang-toggle button:hover {
+  color: var(--white);
+}
+
+.lang-toggle button.on {
+  background: var(--white);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .lang-toggle {
+    margin: 8px 0 0;
+    align-self: flex-start;
+  }
+}
+
+@media print {
+  .lang-toggle {
+    display: none;
+  }
+}

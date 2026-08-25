@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Link from './Link.jsx'
 import { routes } from '../routes.js'
+import LangToggle from './LangToggle.jsx'
 import './NavBar.css'
 
 export default function NavBar() {
@@ -34,6 +35,7 @@ export default function NavBar() {
             {route.label}
           </Link>
         ))}
+        <LangToggle />
       </nav>
     </header>
   )

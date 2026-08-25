@@ -2,6 +2,10 @@ import { useState, useMemo, useRef } from 'react'
 import { C, mono, sans, disp } from './dsalab/tokens.js'
 import { Btn, Pick, Section, CostTable, Code } from './dsalab/ui.jsx'
 import { MODULES } from './dsalab/modules.jsx'
+import { MODULES_ML } from './dsalab/mlModules.jsx'
+import { MODULE_CODE_PY } from './dsalab/modulesPy.js'
+import MlDepth from './dsalab/mlDepthView.jsx'
+import { useLang } from '../prefs.js'
 import { useLocalStorage } from '../useLocalStorage.js'
 
 /* ==================================================================
@@ -10,16 +14,25 @@ import { useLocalStorage } from '../useLocalStorage.js'
    ================================================================== */
 
 export default function DsaExplained() {
+  const lang = useLang()
   const [sel, setSel] = useState(0)
   const [track, setTrack] = useLocalStorage('dsa.track', 'sde')
   const [known, setKnown] = useLocalStorage('dsa.lab.known', {})
   const topRef = useRef(null)
 
-  const m = MODULES[sel]
+  // The MLE track appends the ML-native modules to the same rail.
+  const all = useMemo(
+    () => (track === 'mle' ? [...MODULES, ...MODULES_ML] : MODULES),
+    [track],
+  )
+  // Switching track shrinks the list, so clamp once and use idx everywhere:
+  // reading all[sel - 1] with a stale sel is what blanked the page.
+  const idx = Math.min(sel, all.length - 1)
+  const m = all[idx]
 
   const groups = useMemo(() => {
     const g = []
-    MODULES.forEach((mod, i) => {
+    all.forEach((mod, i) => {
       let last = g[g.length - 1]
       if (!last || last.name !== mod.g) {
         last = { name: mod.g, items: [] }
@@ -28,7 +41,7 @@ export default function DsaExplained() {
       last.items.push({ n: mod.n, i })
     })
     return g
-  }, [])
+  }, [all])
 
   const doneCount = Object.values(known).filter(Boolean).length
 
@@ -113,9 +126,9 @@ export default function DsaExplained() {
                   color: C.mute,
                 }}
               >
-                Nineteen modules, each one a machine you can run. Step the tape,
+                {all.length} modules, each one a machine you can run. Step the tape,
                 watch the state change, then read the invariant that makes it
-                correct and the C++ it compiles down to.
+                correct and the {lang === 'py' ? 'Python' : 'C++'} beside it.
               </p>
             </div>
             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -162,7 +175,7 @@ export default function DsaExplained() {
                 marginBottom: 10,
               }}
             >
-              {doneCount} / {MODULES.length} marked solid
+              {doneCount} / {all.length} marked solid
             </div>
 
             {groups.map((g) => (
@@ -182,7 +195,7 @@ export default function DsaExplained() {
                   {g.name}
                 </div>
                 {g.items.map((it) => {
-                  const on = it.i === sel
+                  const on = it.i === idx
                   return (
                     <div
                       key={it.i}
@@ -250,7 +263,7 @@ export default function DsaExplained() {
                     letterSpacing: '0.1em',
                   }}
                 >
-                  {String(sel + 1).padStart(2, '0')} · {m.days}
+                  {String(idx + 1).padStart(2, '0')} · {m.days}
                 </div>
                 <h2
                   style={{
@@ -266,10 +279,10 @@ export default function DsaExplained() {
                 </h2>
               </div>
               <Btn
-                onClick={() => setKnown({ ...known, [sel]: !known[sel] })}
-                active={!!known[sel]}
+                onClick={() => setKnown({ ...known, [idx]: !known[idx] })}
+                active={!!known[idx]}
               >
-                {known[sel] ? '✓ solid' : 'mark solid'}
+                {known[idx] ? '✓ solid' : 'mark solid'}
               </Btn>
             </div>
 
@@ -321,8 +334,10 @@ export default function DsaExplained() {
               <CostTable head={m.costHead} rows={m.cost} />
             </Section>
 
-            <Section label="C++">
-              <Code>{m.code}</Code>
+            <Section label={lang === 'py' ? 'Python' : 'C++'}>
+              <Code>
+                {(lang === 'py' && (m.codePy || MODULE_CODE_PY[m.n])) || m.code}
+              </Code>
             </Section>
 
             <Section label="Where people lose points" accent={C.rust}>
@@ -359,6 +374,8 @@ export default function DsaExplained() {
               </Section>
             )}
 
+            {track === 'mle' && <MlDepth name={m.n} lang={lang} />}
+
             <Section label="Drill these">
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {m.probs.map((p) => (
@@ -387,11 +404,11 @@ export default function DsaExplained() {
                 gap: 10,
               }}
             >
-              <Btn onClick={() => go(Math.max(0, sel - 1))} wide>
-                ← {sel > 0 ? MODULES[sel - 1].n : 'start'}
+              <Btn onClick={() => go(Math.max(0, idx - 1))} wide>
+                ← {idx > 0 ? all[idx - 1].n : 'start'}
               </Btn>
-              <Btn onClick={() => go(Math.min(MODULES.length - 1, sel + 1))} wide>
-                {sel < MODULES.length - 1 ? MODULES[sel + 1].n : 'end'} →
+              <Btn onClick={() => go(Math.min(all.length - 1, idx + 1))} wide>
+                {idx < all.length - 1 ? all[idx + 1].n : 'end'} →
               </Btn>
             </div>
           </main>

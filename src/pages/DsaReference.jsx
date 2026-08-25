@@ -1,7 +1,10 @@
 import { useState, useMemo } from 'react'
 import { topics, categories } from '../data/dsaTopics.js'
+import { TOPIC_CODE_PY } from '../data/dsaTopicsPy.js'
+import { useLang } from '../prefs.js'
 
 function Topic({ topic, open, onToggle }) {
+  const lang = useLang()
   return (
     <article className={`day${open ? ' is-open' : ''}`}>
       <button
@@ -53,9 +56,11 @@ function Topic({ topic, open, onToggle }) {
             ))}
           </ul>
 
-          <p className="subhead">C++</p>
+          <p className="subhead">{lang === 'py' ? 'Python' : 'C++'}</p>
           <pre>
-            <code>{topic.code}</code>
+            <code>
+              {(lang === 'py' && TOPIC_CODE_PY[topic.id]) || topic.code}
+            </code>
           </pre>
         </div>
       )}
