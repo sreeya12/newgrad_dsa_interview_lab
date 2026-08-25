@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { C, mono, sans, disp } from './dsalab/tokens.js'
 import { Btn, Pick, Section, CostTable, Code } from './dsalab/ui.jsx'
 import { MODULES } from './dsalab/modules.jsx'
@@ -7,6 +7,7 @@ import { MODULE_CODE_PY } from './dsalab/modulesPy.js'
 import MlDepth from './dsalab/mlDepthView.jsx'
 import { useLang } from '../prefs.js'
 import { useLocalStorage } from '../useLocalStorage.js'
+import './dsalab/lab.css'
 
 /* ==================================================================
    DS&A LAB BENCH — companion to the 45-day plan
@@ -18,7 +19,9 @@ export default function DsaExplained() {
   const [sel, setSel] = useState(0)
   const [track, setTrack] = useLocalStorage('dsa.track', 'sde')
   const [known, setKnown] = useLocalStorage('dsa.lab.known', {})
+  const [railOpen, setRailOpen] = useState(false)
   const topRef = useRef(null)
+  const paneRef = useRef(null)
 
   // The MLE track appends the ML-native modules to the same rail.
   const all = useMemo(
@@ -45,11 +48,26 @@ export default function DsaExplained() {
 
   const doneCount = Object.values(known).filter(Boolean).length
 
+  const wantScroll = useRef(false)
+
   const go = (i) => {
+    wantScroll.current = true
     setSel(i)
-    if (topRef.current)
-      topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setRailOpen(false)
   }
+
+  // Scroll after the commit, not inside go(): closing the picker removes up
+  // to 60vh of list, so scrolling first lands you well past the heading.
+  // On desktop the rail sits beside the masthead and scrolling there shows
+  // both; on a phone the masthead is a screenful you would only scroll past
+  // again, so land on the module itself.
+  useEffect(() => {
+    if (!wantScroll.current) return
+    wantScroll.current = false
+    const narrow = window.matchMedia('(max-width: 880px)').matches
+    const target = (narrow ? paneRef : topRef).current
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [idx, railOpen])
 
   return (
     <div
@@ -60,21 +78,11 @@ export default function DsaExplained() {
         flexGrow: 1,
       }}
     >
-      <style>{`
-        .lab-bench * { box-sizing: border-box; }
-        .lab-bench button:focus-visible,
-        .lab-bench [tabindex]:focus-visible { outline: 2px solid ${C.rust}; outline-offset: 2px; }
-        @media (prefers-reduced-motion: reduce) { .lab-bench * { scroll-behavior: auto !important; } }
-        @media print { .lab-bench .rail { display: none; } }
-      `}</style>
-
-      <div
-        className="lab-bench"
-        style={{ maxWidth: 1180, margin: '0 auto', padding: '0 20px 80px' }}
-      >
+      <div className="lab-bench">
         {/* masthead */}
         <header
           ref={topRef}
+          className="mast"
           style={{
             padding: '36px 0 22px',
             borderBottom: `2px solid ${C.ink}`,
@@ -82,6 +90,7 @@ export default function DsaExplained() {
           }}
         >
           <div
+            className="masthead-row"
             style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -126,12 +135,15 @@ export default function DsaExplained() {
                   color: C.mute,
                 }}
               >
-                {all.length} modules, each one a machine you can run. Step the tape,
-                watch the state change, then read the invariant that makes it
-                correct and the {lang === 'py' ? 'Python' : 'C++'} beside it.
+                {all.length} modules, each one a machine you can run. Step the
+                tape, watch the state change, then read the invariant that makes
+                it correct and the {lang === 'py' ? 'Python' : 'C++'} beside it.
               </p>
             </div>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <div
+              className="trackpick"
+              style={{ display: 'flex', gap: 8, alignItems: 'center' }}
+            >
               <Pick
                 label="track"
                 value={track}
@@ -145,115 +157,113 @@ export default function DsaExplained() {
           </div>
         </header>
 
-        <div
-          style={{
-            display: 'flex',
-            gap: 34,
-            alignItems: 'flex-start',
-            flexWrap: 'wrap',
-          }}
-        >
-          {/* rail */}
-          <nav
-            className="rail"
-            style={{
-              flex: '1 1 236px',
-              minWidth: 236,
-              maxWidth: 300,
-              paddingTop: 22,
-              position: 'sticky',
-              top: 'calc(var(--nav-h) + 12px)',
-              maxHeight: 'calc(100vh - var(--nav-h) - 24px)',
-              overflowY: 'auto',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: mono,
-                fontSize: 11,
-                color: C.mute,
-                marginBottom: 10,
-              }}
+        <div className="cols">
+          {/* rail — a sticky sidebar on desktop, a collapsed picker on a phone */}
+          <nav className={`rail${railOpen ? ' open' : ''}`}>
+            <button
+              type="button"
+              className="railtoggle"
+              aria-expanded={railOpen}
+              onClick={() => setRailOpen((o) => !o)}
             >
-              {doneCount} / {all.length} marked solid
-            </div>
+              <span className="rt-n">{String(idx + 1).padStart(2, '0')}</span>
+              <span className="rt-name">{m.n}</span>
+              <span className="rt-meta">
+                {doneCount}/{all.length}
+              </span>
+              <span className="rt-chev" aria-hidden="true">
+                ▸
+              </span>
+            </button>
 
-            {groups.map((g) => (
-              <div key={g.name} style={{ marginBottom: 18 }}>
-                <div
-                  style={{
-                    fontFamily: mono,
-                    fontSize: 10,
-                    letterSpacing: '0.14em',
-                    textTransform: 'uppercase',
-                    color: C.mute,
-                    paddingBottom: 6,
-                    borderBottom: `1px solid ${C.line}`,
-                    marginBottom: 4,
-                  }}
-                >
-                  {g.name}
-                </div>
-                {g.items.map((it) => {
-                  const on = it.i === idx
-                  return (
-                    <div
-                      key={it.i}
-                      onClick={() => go(it.i)}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault()
-                          go(it.i)
-                        }
-                      }}
-                      style={{
-                        display: 'flex',
-                        gap: 9,
-                        alignItems: 'baseline',
-                        padding: '6px 8px',
-                        cursor: 'pointer',
-                        borderRadius: 2,
-                        background: on ? C.ink : 'transparent',
-                        color: on ? C.paper : C.ink,
-                      }}
-                    >
-                      <span
+            <div className="raillist">
+              <div
+                style={{
+                  fontFamily: mono,
+                  fontSize: 11,
+                  color: C.mute,
+                  marginBottom: 10,
+                }}
+              >
+                {doneCount} / {all.length} marked solid
+              </div>
+
+              {groups.map((g) => (
+                <div key={g.name} style={{ marginBottom: 18 }}>
+                  <div
+                    style={{
+                      fontFamily: mono,
+                      fontSize: 10,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      color: C.mute,
+                      paddingBottom: 6,
+                      borderBottom: `1px solid ${C.line}`,
+                      marginBottom: 4,
+                    }}
+                  >
+                    {g.name}
+                  </div>
+                  {g.items.map((it) => {
+                    const on = it.i === idx
+                    return (
+                      <div
+                        key={it.i}
+                        onClick={() => go(it.i)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            go(it.i)
+                          }
+                        }}
                         style={{
-                          fontFamily: mono,
-                          fontSize: 10.5,
-                          color: on ? '#8a99ad' : C.mute,
+                          display: 'flex',
+                          gap: 9,
+                          alignItems: 'baseline',
+                          padding: '6px 8px',
+                          cursor: 'pointer',
+                          borderRadius: 2,
+                          background: on ? C.ink : 'transparent',
+                          color: on ? C.paper : C.ink,
                         }}
                       >
-                        {String(it.i + 1).padStart(2, '0')}
-                      </span>
-                      <span style={{ fontSize: 13.5, lineHeight: 1.35, flex: 1 }}>
-                        {it.n}
-                      </span>
-                      {known[it.i] && (
-                        <span style={{ color: on ? C.paper : C.teal, fontSize: 12 }}>
-                          ✓
+                        <span
+                          style={{
+                            fontFamily: mono,
+                            fontSize: 10.5,
+                            color: on ? '#8a99ad' : C.mute,
+                          }}
+                        >
+                          {String(it.i + 1).padStart(2, '0')}
                         </span>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-            ))}
+                        <span
+                          style={{ fontSize: 13.5, lineHeight: 1.35, flex: 1 }}
+                        >
+                          {it.n}
+                        </span>
+                        {known[it.i] && (
+                          <span
+                            style={{
+                              color: on ? C.paper : C.teal,
+                              fontSize: 12,
+                            }}
+                          >
+                            ✓
+                          </span>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              ))}
+            </div>
           </nav>
 
           {/* main */}
-          <main style={{ flex: '999 1 560px', minWidth: 300, paddingTop: 24 }}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                gap: 14,
-                alignItems: 'flex-start',
-                flexWrap: 'wrap',
-              }}
-            >
+          <main className="pane" ref={paneRef}>
+            <div className="modhead">
               <div>
                 <div
                   style={{
@@ -396,14 +406,7 @@ export default function DsaExplained() {
               </div>
             </Section>
 
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: 34,
-                gap: 10,
-              }}
-            >
+            <div className="stepnav">
               <Btn onClick={() => go(Math.max(0, idx - 1))} wide>
                 ← {idx > 0 ? all[idx - 1].n : 'start'}
               </Btn>

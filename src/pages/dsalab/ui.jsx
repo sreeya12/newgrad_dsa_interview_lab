@@ -633,7 +633,11 @@ export function Chips({ items, title }) {
 
 export function Pick({ label, value, onChange, options }) {
   return (
-    <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+    <div
+      // Wraps rather than clips: five options with prose labels
+      // ("0.3 good", "1.05 diverges") are wider than a phone.
+      style={{ display: 'flex', gap: 4, alignItems: 'center', flexWrap: 'wrap' }}
+    >
       {label && (
         <span style={{ fontFamily: mono, fontSize: 11, color: C.mute }}>
           {label}

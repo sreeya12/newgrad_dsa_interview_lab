@@ -1,0 +1,247 @@
+/* ==================================================================
+   Lab Bench layout. Everything that has to respond to width lives here
+   rather than in inline styles, because an inline style cannot be
+   reached by a media query. The visual styling of individual pieces
+   stays inline in ui.jsx — this file is only the frame.
+
+   One breakpoint that matters: below 880px the two-column layout stops
+   working, because the rail is 24 items long. Above it, the rail is a
+   sticky sidebar. Below it, the rail becomes a collapsed picker showing
+   only the current module, and the prev/next buttons at the foot of the
+   page become the primary way through the material.
+   ================================================================== */
+
+.lab-bench * {
+  box-sizing: border-box;
+}
+
+.lab-bench button:focus-visible,
+.lab-bench [tabindex]:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+}
+
+/* --- the frame --- */
+
+.lab-bench {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+.lab-bench .cols {
+  display: flex;
+  gap: 34px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.lab-bench .rail {
+  flex: 1 1 236px;
+  min-width: 236px;
+  max-width: 300px;
+  padding-top: 22px;
+  position: sticky;
+  top: calc(var(--nav-h) + 12px);
+  max-height: calc(100vh - var(--nav-h) - 24px);
+  overflow-y: auto;
+}
+
+.lab-bench .pane {
+  flex: 999 1 560px;
+  min-width: 300px;
+  padding-top: 24px;
+}
+
+/* Module title + "mark solid", then the prev/next pair at the foot. Both
+   are inline-flex rows on desktop and stack on a phone, so their layout
+   lives here rather than in a style prop a media query cannot reach. */
+
+.lab-bench .modhead {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.lab-bench .stepnav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 34px;
+  gap: 10px;
+}
+
+/* The collapsed picker only exists on narrow screens. */
+.lab-bench .railtoggle {
+  display: none;
+}
+
+/* ------------------------------------------------------------------
+   Narrow: one column, rail collapsed
+   ------------------------------------------------------------------ */
+
+@media (max-width: 880px) {
+  .lab-bench {
+    padding: 0 14px 64px;
+  }
+
+  .lab-bench .cols {
+    display: block;
+  }
+
+  /* Static, not sticky. A sticky rail that has wrapped onto its own row
+     stays pinned and the article scrolls underneath it. */
+  .lab-bench .rail {
+    position: static;
+    max-width: none;
+    min-width: 0;
+    max-height: none;
+    overflow: visible;
+    padding-top: 16px;
+  }
+
+  .lab-bench .raillist {
+    display: none;
+    margin-top: 8px;
+    max-height: 60vh;
+    overflow-y: auto;
+    border: 1px solid var(--line);
+    background: var(--white);
+    border-radius: 2px;
+    padding: 10px 10px 4px;
+  }
+
+  .lab-bench .rail.open .raillist {
+    display: block;
+  }
+
+  .lab-bench .railtoggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 11px 13px;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    min-height: 46px;
+  }
+
+  .lab-bench .railtoggle .rt-n {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink2);
+    border: 1px solid var(--line);
+    padding: 3px 6px;
+    flex-shrink: 0;
+  }
+
+  .lab-bench .railtoggle .rt-name {
+    font-family: var(--disp);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .lab-bench .railtoggle .rt-meta {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink2);
+    flex-shrink: 0;
+  }
+
+  .lab-bench .railtoggle .rt-chev {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink2);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .lab-bench .rail.open .railtoggle .rt-chev {
+    transform: rotate(90deg);
+  }
+
+  .lab-bench .pane {
+    padding-top: 20px;
+    min-width: 0;
+    /* go() scrolls here after a pick; keep the heading clear of the nav. */
+    scroll-margin-top: calc(var(--nav-h) + 8px);
+  }
+
+  /* Masthead: the two-line h1 gets its own break back, and the track
+     switch drops under the prose instead of squeezing beside it. */
+  .lab-bench .mast {
+    padding: 24px 0 18px;
+  }
+
+  .lab-bench .mast .masthead-row {
+    display: block;
+  }
+
+  .lab-bench .mast .trackpick {
+    margin-top: 16px;
+  }
+
+  /* Give every tap target a finger-sized box. */
+  .lab-bench .rail [role="button"] {
+    padding: 9px 8px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Phone: tighten the reading column
+   ------------------------------------------------------------------ */
+
+@media (max-width: 560px) {
+  .lab-bench {
+    padding: 0 12px 56px;
+  }
+
+  /* The module title needs the full width, so the "mark solid" button
+     drops below it rather than squeezing the heading into two words. */
+  .lab-bench .pane .modhead {
+    display: block;
+  }
+
+  .lab-bench .pane .modhead > button {
+    margin-top: 10px;
+  }
+
+  /* prev / next stack: two 24-character module names do not fit side
+     by side, and a truncated "← Dynamic programming, one dim…" helps
+     nobody. */
+  .lab-bench .stepnav {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .lab-bench .stepnav button {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-bench * {
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  .lab-bench .rail {
+    display: none;
+  }
+}

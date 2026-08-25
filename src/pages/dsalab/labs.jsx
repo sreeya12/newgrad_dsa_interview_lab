@@ -1951,8 +1951,13 @@ export function LabBits() {
         </div>
       </div>
 
-      <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 12.5 }}>
-        <tbody>
+      {/* Two nowrap mono columns plus prose will not fit a phone; let the
+          table scroll inside its own box rather than push the page wide. */}
+      <div style={{ overflowX: 'auto' }}>
+        <table
+          style={{ borderCollapse: 'collapse', width: '100%', fontSize: 12.5 }}
+        >
+          <tbody>
           {rows.map(([k, v, why]) => (
             <tr key={k} style={{ borderTop: `1px solid ${C.line}` }}>
               <td
@@ -1980,8 +1985,9 @@ export function LabBits() {
               <td style={{ padding: '6px 0', color: C.mute }}>{why}</td>
             </tr>
           ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

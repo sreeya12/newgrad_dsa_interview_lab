@@ -92,6 +92,31 @@ Modules 01 (cost model) and 19 (bit tricks) have no trace: they are live
 parameter explorers rather than stepped algorithms. 22 of the 24 modules on the
 MLE track are traced.
 
+## Responsive layout
+
+`src/pages/dsalab/lab.css` holds every rule that has to react to width — an
+inline style prop cannot be reached by a media query, so the two-column frame,
+the rail and the module pane all live there while the visual styling of the
+individual pieces stays inline in `ui.jsx`.
+
+One breakpoint carries the page. Above **880px** the rail is a sticky sidebar,
+as before. Below it the layout is one column and the rail collapses into a
+picker showing only the current module — because a 24-item sticky sidebar that
+has wrapped onto its own row stays pinned and lets the article scroll
+underneath it, and because you would otherwise scroll past every module title
+to reach the one you picked. Choosing a module closes the picker and scrolls to
+the module heading rather than the masthead; that scroll runs in an effect
+after the commit, since closing the picker removes up to 60vh and scrolling
+before it does lands you well past the heading. A second breakpoint at 560px
+stacks the prev/next pair and drops the "mark solid" button below the title.
+
+Wide content — array rows, grids, matrices, code listings, cost tables — sits
+inside its own `overflow-x: auto` box, so it scrolls sideways rather than
+pushing the page wide. `respsweep.mjs` checks that at 360, 390, 430, 768, 1024
+and 1300px: every one of the 24 modules, asserting nothing is clipped without a
+scrollable ancestor, the document never overflows, the rail is in the right
+mode, and every trace still advances.
+
 ## The language toggle
 
 The nav carries a C++ / Python switch that drives every code listing in the app:
